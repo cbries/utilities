@@ -8,6 +8,7 @@ This repository includes an uncategorized list of applications/tools which suppo
 - Message Passing Interface: examples of MPI usage
 - sdlpaint: A "paint" application which is based on Simple Direct Layer (SDL) graphics routines
 - Guestbook.fm: A simple PHP-based guestbook with Captcha functionality, and CRUD.
+- 1filer: Small single application implemented in single files, i.e. any file is a standalone application.
 
 - ...more tools are in progress!
  
