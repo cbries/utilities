@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>img/Game_of_life_boat.png</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file alias="box01.jpg">img/box01.jpg</file>
+        <file alias="box02.jpg">img/box02.jpg</file>
+        <file alias="box03.jpg">img/box03.jpg</file>
+        <file alias="box04.png">img/box04.png</file>
+        <file alias="box05.png">img/box05.png</file>
+    </qresource>
+</RCC>
