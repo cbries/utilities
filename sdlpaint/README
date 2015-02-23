@@ -1,0 +1,20 @@
+
+# Paint with Simple Direct Layer (SDL)
+
+## Tested Environments
+- compiled and executed on Linux Mint
+- SDL 1.2+
+
+## Requirements
+- SDL 1.2+ (http://www.libsdl.org)
+- SDL_gfx (http://www.ferzkopp.net/joomla/content/view/19/14/)
+- SDL_image (http://www.libsdl.org/projects/SDL_image/)
+
+## Debian, Ubuntu, Mint
+- $ sudo apt-get install libsdl1.2-dev
+- $ sudo apt-get install libsdl-image1.2-dev
+- $ sudo apt-get install libsdl-gfx1.2-dev
+
+## Build
+- $ ./make.sh
+- or $ g++ -O3 `sdl-config --cflags` *.cpp -o sdlpaint `sdl-config --libs` -lSDL_gfx -lSDL_image
