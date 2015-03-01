@@ -2,6 +2,9 @@
 # Reference
 - Have a look at this website: http://blog.dioty.co/2014/12/raspberry-pi-sensors-and-dioty-mqtt.html
 
+# Hardware
+- Have a look at `fritzing/weatherpi.png` for a rudimentary hardware overview.
+
 # Installation and Usage
 - In case you have the bcm2835 and Wiring libraries already installed, just enter only `make clean && make` and afterwards call `sudo ./weatherpi` -> The following output should show up:
 ```bash
