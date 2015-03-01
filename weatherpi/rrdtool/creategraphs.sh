@@ -10,7 +10,7 @@ rrdtool graph graph00.png \
 	DEF:humidity=weatherdata.rrd:humidity:AVERAGE \
 	DEF:altitude=weatherdata.rrd:pressure:AVERAGE \
 	DEF:pressure=weatherdata.rrd:pressure:AVERAGE \
-    LINE2:temperature#3366CC:"Temperatue [°C]" \
+    LINE2:temperature#3366CC:"Temperature [°C]" \
 	LINE3:humidity#0000ff:"Humidity [%]" \
 	LINE4:altitude#ff0000:"Altitude [m]" \
 	LINE5:pressure#ff00ff:"Pressure [hPa]"
