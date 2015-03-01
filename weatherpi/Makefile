@@ -6,7 +6,7 @@ OBJ = strhelper.o bmp180.o dht22.o weather.o
 %.o: %.cpp $(DEPS)
 	$(CC) ${CFLAGS} -c -o $@ $<
 
-weatherapi: $(OBJ)
+weatherpi: $(OBJ)
 	g++ -o $@ $^ $(CFLAGS)
 
 clean:
