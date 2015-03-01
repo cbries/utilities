@@ -2,20 +2,16 @@
 # Reference
 - Have a look at this website: http://blog.dioty.co/2014/12/raspberry-pi-sensors-and-dioty-mqtt.html
 
-# Installation
+# Installation and Usage
 - In case you have the bcm2835 and Wiring libraries already installed, just enter only `make clean && make` and afterwards call `sudo ./weatherpi` -> The following output should show up:
 ```bash
 pi@raspberrypi ~/gitrepos/utilities/weatherpi $ sudo ./weatherpi
-DHT22
- Temperature = 21.2 °C
- Humidity = 45.5 %
-BMP180
- Temperature = 21.7 C
- Pressure = 983.82 hPa
- Altitude = 248.3
+Initialize: DONE
+Query data: OK
+RRD: OK
 ```
-
 - Otherwise we recommend to follow section *Requirements*!
+- Call `http://YOURHOSORIP[:PORT]/weatherpi/html/index.html`
 
 # Requirements
 - `sudo apt-get install python g++ wget libssl-dev -y`
@@ -47,4 +43,5 @@ sudo make check
 sudo make install
 ```
 - Install Gordon's Wiring library: `https://git.drogon.net/?p=wiringPi;a=summary` -> Click on "Snapshot" and store it where you want.
+- Install rrdtool: `sudo apt-get install rrdtool -y`
 
