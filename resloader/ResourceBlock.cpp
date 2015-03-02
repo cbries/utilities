@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2012
+ * Copyright (C) 2012 Christian Benjamin Ries
  * Christian Benjamin Ries <mail@christianbenjaminries.de>
  * 
  * Date: 25th November 2012
- * License: I don't care!
+ * License: MIT
  */
 // 
 #include "ResourceBlock.h"

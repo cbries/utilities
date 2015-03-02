@@ -3,7 +3,7 @@
  * Christian Benjamin Ries <mail@christianbenjaminries.de>
  * 
  * Date: 25th November 2012
- * License: I don't care!
+ * License: MIT 
  */
 // C++
 #include <iostream>
