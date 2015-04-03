@@ -48,3 +48,10 @@ sudo make install
 - Install Gordon's Wiring library: `https://git.drogon.net/?p=wiringPi;a=summary` -> Click on "Snapshot" and store it where you want.
 - Install rrdtool: `sudo apt-get install rrdtool -y`
 
+# Starting weatherpi on system start
+- just create a symbolic link within `/bin` and add `weatherpi.init.d` to the init.d process
+- edit weatherpi.init.d and modify `dir` for your system environment (i.e. set the path where `weatherpi` application is stores)
+- `cd /bin`, `ln -s /your/git/repos/directory/weatherpi.init.d`
+- `cd /etc/init.d`
+- `ln -s /bin/weatherpi.init.d && chmod +x weatherpi.init.d`
+
