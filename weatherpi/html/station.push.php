@@ -36,7 +36,11 @@ for($i=0; $i < count($files); ++$i)
 	$context  = stream_context_create($options);
 	$result = file_get_contents($TARGETURL, false, $context);
 
+	ob_start();
 	var_dump($result);
+	$r = ob_get_clean();
+	$r .= "\n\n" . date('Y-m-d H:i:s') . "\n";
+	file_put_contents("station.push.log", $r);
 }
 
 ?>
