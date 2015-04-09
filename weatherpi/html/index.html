@@ -11,19 +11,25 @@
 	<script src="thirdparty/bootstrap.min.js"></script>
 	
   <style>
-body { background-color: #ffffff; font-family: ‘Arial Black’, Gadget, sans-serif; }
+body { margin: 0; padding: 0; background-color: #ffffff; font-family: ‘Arial Black’, Gadget, sans-serif; }
 td { text-align: center; }
 td { padding: 5px; }
 a, a:visited, a:hover { text-decoration: none; color: #000; }
 a:hover { text-decoration: underline; }
-.row { margin: 10px; }
+.row { margin: 0px; padding: 0px; }
 img { padding: 5px; }
+div.row > div { padding: 0px; margin: 0px; }
+.col-sm-6 > img,
+.col-md-12 > img { width: 100%; padding: 0px; padding-top: 2px; }
+.head > img { min-height: 300px; }
   </style>
  </head>
 <body>
 	<center>
 		<div class="row">
-			<div class="col-md-12 col-lg-8"><img src="data/graph00.png" border="0" width="100%"></div>
+			<div class="col-md-12 col-lg-8 head">
+				<img src="data/graph00.png" border="0" width="100%">
+			</div>
 		</div>
 
 		<div class="row">
