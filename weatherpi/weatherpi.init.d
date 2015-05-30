@@ -1,6 +1,6 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:
+# Provides:	     weatherpi
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
@@ -9,15 +9,9 @@
 # Description:       A simple tool for query weather data.
 ### END INIT INFO
 
-<<<<<<< HEAD
-dir="/bin"
-user="root"
-cmd="weatherpi"
-=======
 dir="/home/pi/gitrepos/utilities/weatherpi"
 user="root"
 cmd="./weatherpi"
->>>>>>> 221208d337b865e50c97326a5ae71c46b8c52e4c
 
 name=`basename $0`
 pid_file="/var/run/$name.pid"
