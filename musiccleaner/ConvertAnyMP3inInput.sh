@@ -33,5 +33,5 @@ echo "We will use: $SOURCE_DIRNAME"
 for i in $( ls $SOURCE_DIRNAME/*.mp3 ); do	
 	TARGET_FILENAME=`basename $i .mp3`
 	TARGET_FILENAME_FULL=$TARGET_DIRNAME/$TARGET_FILENAME.mp3		
-	./ffmpeg.exe -i $i -acodec libmp3lame -ss 00:00:02 $TARGET_FILENAME_FULL	
+	./ffmpeg.exe -i $i -acodec libmp3lame -aq 2 -ss 00:00:02 $TARGET_FILENAME_FULL	
 done
