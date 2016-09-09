@@ -151,8 +151,8 @@ namespace CreatePlaylists
                 return -1;
 
             AudioFileReader audioFileReader = new AudioFileReader(musicPath);
-            IWavePlayer outwave = new WaveOut();
-            outwave.Init(audioFileReader);
+            //IWavePlayer outwave = new WaveOut();
+            //outwave.Init(audioFileReader);
             return audioFileReader.Length;
         }
 
@@ -235,6 +235,13 @@ namespace CreatePlaylists
                     }
                     cnt += string.Format("#EXTINF:{0},{1} - {2}\r\n", duration, artist, title);
                     cnt += Path.GetFileName(item.Filename) + "\r\n";
+
+                    var cnt1 = cnt;
+                    _ctx.Post(o =>
+                    {
+                        if (!string.IsNullOrEmpty(cnt1))
+                            TxtInfo.Text = cnt1;
+                    }, null);
                 }
 
                 _ctx.Post(o =>
