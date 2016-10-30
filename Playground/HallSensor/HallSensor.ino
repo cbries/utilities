@@ -6,14 +6,17 @@
 #include <EEPROM.h>
 #include "EepromUtil.h"
 
-const int hallPin = A0;     
-const int ledPin =  13;     
+const int hallPin = A0;
+const int irPin = A1; 
+const int ledPin =  13;
 
-const long eepromAddressCounter = 0;
+const long eepromAddressCounter = 0x00;
+const long eepromAddressCounter2 = 0x04;
 const long eepromAddressLastAccess = 0x0A;
 
 #define MAX_LENGTH 18
 char lastAccess[MAX_LENGTH] = {'\0'};
+int irStateCounter = 0;
 int hallStateCounter = 0;
 int hallState = 0;
 bool hallStateChanged = false;
@@ -22,9 +25,11 @@ void setup()
 {
   pinMode(ledPin, OUTPUT);      
   pinMode(hallPin, INPUT);     
-  //Serial.begin(9600);
-  Serial2.begin(9600);
+  pinMode(irPin, INPUT);
+  Serial.begin(9600);
+  //Serial2.begin(9600);
   EepromUtil::eeprom_read_int(eepromAddressCounter, &hallStateCounter);
+  EepromUtil::eeprom_read_int(eepromAddressCounter2, &irStateCounter);
   EepromUtil::eeprom_read_string(eepromAddressLastAccess, lastAccess, MAX_LENGTH);
 }
 
@@ -49,24 +54,30 @@ void loop()
     }
   }
 
-  Serial2.print("{\"counter\":");
-  Serial2.print(hallStateCounter);
-  Serial2.print(",\"lastAccess\":\"");
-  Serial2.print(lastAccess);
-  Serial2.print("\"");
-  Serial2.println("}");
+  // ir stuff
+  int irRead = analogRead(irPin);
 
+  // send via bluetooth
+  Serial.print("{\"counter\":");
+  Serial.print(hallStateCounter);
+  Serial.print(",\"ir\":");
+  Serial.print(irRead);
+  Serial.print(",\"lastAccess\":\"");
+  Serial.print(lastAccess);
+  Serial.print("\"");
+  Serial.println("}");
+  
   checkSerial();
 }
 
 void checkSerial()
 {
-  if(Serial2.available() > 0)
+  if(Serial.available() > 0)
   {
-    byte dataInLength = Serial2.available();
+    byte dataInLength = Serial.available();
     if(dataInLength <= 2)
     {
-      byte dataIn = Serial2.read();
+      byte dataIn = Serial.read();
       if(dataIn == 'r' /* reset counter */)
       {
         hallStateCounter = 0x00;
@@ -75,7 +86,7 @@ void checkSerial()
     }
     else
     {
-      String s = Serial2.readString();
+      String s = Serial.readString();
       String lastAccessCmd = getValue(s, ':', 0);
       String lastAccessValue = getValue(s, ':', 1);
 
