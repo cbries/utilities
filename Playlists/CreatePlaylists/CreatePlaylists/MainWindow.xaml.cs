@@ -118,7 +118,7 @@ namespace CreatePlaylists
         private void MainWindow_OnInitialized(object sender, EventArgs e)
         {
             TxtDirectory.Text = Utils.RestoryRegistry();
-            if (!string.IsNullOrEmpty(TxtDirectory.Text))
+            if (!string.IsNullOrEmpty(TxtDirectory.Text) && Directory.Exists(TxtDirectory.Text))
                 LoadFiles(TxtDirectory.Text.Trim());
         }
 
