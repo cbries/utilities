@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using NAudio.Wave;
+using TagLib;
+using File = System.IO.File;
 
 namespace CreatePlaylists
 {
@@ -56,7 +59,7 @@ namespace CreatePlaylists
                     return;
 
                 string argument = @"/select, " + filepath;
-                System.Diagnostics.Process.Start("explorer.exe", argument);
+                Process.Start("explorer.exe", argument);
             }
             else
             {
@@ -65,7 +68,7 @@ namespace CreatePlaylists
                     return;
 
                 string argument = @"/select, " + filepath;
-                System.Diagnostics.Process.Start("explorer.exe", argument);
+                Process.Start("explorer.exe", argument);
             }
         }
 
@@ -97,6 +100,7 @@ namespace CreatePlaylists
     {
         public string Name { get; set; }
         public string Filename { get; set; }
+        public bool HasId3Tag { get; set; }
 
         public override string ToString()
         {
@@ -163,39 +167,158 @@ namespace CreatePlaylists
             if (string.IsNullOrEmpty(musicPath))
                 return -1;
 
-            AudioFileReader audioFileReader = new AudioFileReader(musicPath);
-            //IWavePlayer outwave = new WaveOut();
-            //outwave.Init(audioFileReader);
-            return audioFileReader.Length;
+            using (AudioFileReader audioFileReader = new AudioFileReader(musicPath))
+            {
+                //IWavePlayer outwave = new WaveOut();
+                //outwave.Init(audioFileReader);
+                return audioFileReader.Length;
+            }
+        }
+
+        private void Dump(string key, object data)
+        {
+            Trace.WriteLine(string.Format("  {0}: {1}", key, data));
+        }
+
+        private string ArrayToString(string[] cnt)
+        {
+            if (cnt == null || cnt.Length <= 0)
+                return string.Empty;
+            return string.Join(", ", cnt);
+        }
+
+        private void ShowTag(TagLib.File file, string key)
+        {
+            if (file == null)
+                return;
+
+            try
+            {
+                switch (key)
+                {
+                    case "album":
+                        Dump(key, file.Tag.Album);
+                        break;
+                    case "artists":
+                        Dump(key, ArrayToString(file.Tag.AlbumArtists));
+                        break;
+                    case "comment":
+                        Dump(key, file.Tag.Comment);
+                        break;
+                    case "lyrics":
+                        Dump(key, file.Tag.Lyrics);
+                        break;
+                    case "composers":
+                        Dump(key, ArrayToString(file.Tag.Composers));
+                        break;
+                    case "disc":
+                        Dump(key, file.Tag.Disc);
+                        break;
+                    case "disccount":
+                        Dump(key, file.Tag.DiscCount);
+                        break;
+                    case "genres":
+                        Dump(key, ArrayToString(file.Tag.Genres));
+                        break;
+                    case "performers":
+                        Dump(key, ArrayToString(file.Tag.Performers));
+                        break;
+                    case "title":
+                        Dump(key, file.Tag.Title);
+                        break;
+                    case "track":
+                        Dump(key, file.Tag.Track);
+                        break;
+                    case "trackcount":
+                        Dump(key, file.Tag.TrackCount);
+                        break;
+                    case "year":
+                        Dump(key, file.Tag.Year);
+                        break;
+                }
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
         private void LoadFiles(string folderpath)
         {
+            List<TagTypes> tags = new List<TagTypes>()
+            {
+                TagTypes.Ape, TagTypes.Apple, TagTypes.Asf, TagTypes.AudibleMetadata, TagTypes.DivX,
+                TagTypes.FlacMetadata, TagTypes.GifComment, TagTypes.IPTCIIM, TagTypes.Id3v1, TagTypes.Id3v2,
+                TagTypes.JpegComment, TagTypes.MovieId, TagTypes.Png, TagTypes.RiffInfo, TagTypes.TiffIFD,
+                TagTypes.XMP, TagTypes.Xiph
+            };
+
+            List<string> additionalTags = new List<string>()
+            {
+                "album", "artists", "comment", "lyrics", "composers", "disc", 
+                "disccount", "genres", "performers", "title", "trackcount",
+                "year"
+            };
+
             Mp3Files.SelectionMode = SelectionMode.Multiple;
             Mp3Files.Items.Clear();
             var files = GetFilesInFolder(folderpath);
             foreach (var file in files)
             {
-                TagLib.File f = TagLib.File.Create(file);
-
-                string name = Path.GetFileName(file);
-
-                //string tagPerfomer = string.Join(",", f.Tag.PerformersSort);
-                string tagAlbum = f.Tag.Album;
-                string tagTitle = f.Tag.Title;
-
-                string additionalInformation = string.Format("{0} - {1}", 
-                    string.IsNullOrEmpty(tagAlbum) ? "x" : tagAlbum,
-                    string.IsNullOrEmpty(tagTitle) ? "x" : tagTitle
-                    );
-
-                var item = new FileItem()
+                using (TagLib.File f = TagLib.File.Create(file))
                 {
-                    Name = string.Format("{0} ({1})", name, additionalInformation),
-                    Filename = file
-                };
+                    string name = Path.GetFileName(file);
 
-                Mp3Files.Items.Add(item);
+                    Trace.WriteLine("Some info: " + name);
+                    foreach (var tag in tags)
+                    {
+                        try
+                        {
+                            var info = f.GetTag(tag);
+                            if (info != null)
+                            {
+                                Trace.WriteLine("  " + tag + ": " + info);
+                            }
+                        }
+                        catch
+                        {
+                            // ignore
+                        }
+                    }
+
+                    foreach (var tagname in additionalTags)
+                    {
+                        try
+                        {
+                            ShowTag(f, tagname);
+                        }
+                        catch
+                        {
+                            // ignore
+                        }
+                    }
+
+                    //string tagPerfomer = string.Join(",", f.Tag.PerformersSort);
+                    string tagAlbum = f.Tag.Album;
+                    string tagTitle = f.Tag.Title;
+
+                    bool hasId3Tag = !string.IsNullOrEmpty(tagAlbum) || !string.IsNullOrEmpty(tagTitle);
+
+                    string additionalInformation = string.Format("{0} - {1}", 
+                        string.IsNullOrEmpty(tagAlbum) ? "x" : tagAlbum,
+                        string.IsNullOrEmpty(tagTitle) ? "x" : tagTitle
+                        );
+
+                    var item = new FileItem()
+                    {
+                        Name = string.Format("{0} ({1})", name, additionalInformation),
+                        Filename = file,
+                        HasId3Tag = hasId3Tag
+                    };
+
+                    Mp3Files.Items.Add(item);
+
+                }
             }
             Mp3Files.SelectAll();
         }
@@ -214,6 +337,7 @@ namespace CreatePlaylists
             bool isChkAfterPatternChecked = 
                 ChkAfterPattern.IsChecked != null && ChkAfterPattern.IsChecked.Value;
             string pattern = TxtPattern.Text;
+            bool forceId3Tagging = ChkForceId3Tagging.IsChecked != null && ChkForceId3Tagging.IsChecked.Value;
 
             return await Task.Run(delegate
             {
@@ -239,13 +363,26 @@ namespace CreatePlaylists
                     if (p != -1)
                     {
                         artist = filename.Substring(0, p).Trim();
-                        title = filename.Substring(p + 1).Trim();
+                        title = Path.GetFileNameWithoutExtension(filename.Substring(p + 1).Trim());
                     }
                     else
                     {
                         artist = filename;
-                        title = filename;
+                        title = Path.GetFileNameWithoutExtension(filename);
                     }
+
+                    if (!item.HasId3Tag || forceId3Tagging)
+                    {
+                        using (TagLib.File f = TagLib.File.Create(item.Filename))
+                        {
+                            f.Tag.Title = title;
+                            f.Tag.Composers = new [] {artist};
+                            f.Tag.AlbumArtists = new[] {artist};
+                            f.Tag.Performers = new [] {artist};
+                            f.Save();
+                        }
+                    }
+
                     cnt += string.Format("#EXTINF:{0},{1} - {2}\r\n", duration, artist, title);
                     cnt += Path.GetFileName(item.Filename) + "\r\n";
 
