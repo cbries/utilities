@@ -12,8 +12,9 @@
         
         <DockPanel Grid.Row="0" Margin="0,5,0,5" HorizontalAlignment="Left">
             <Label Content="Directory:" VerticalAlignment="Center" Margin="5,0,5,0"/>
-            <TextBox Name="TxtDirectory" MinWidth="300" Margin="5,0,5,0"/>
-            <Button Name="BtnSelectDirectory" Content="Select" Width="75" Margin="5,0,5,0" Click="BtnSelectDirectory_Click"/>
+            <TextBox Name="TxtDirectory" MinWidth="240" MaxWidth="240" Margin="5,0,5,0"/>
+            <Button Name="BtnSelectDirectory" Content="Select" Width="65" Margin="5,0,5,0" Click="BtnSelectDirectory_Click"/>
+            <Button Name="BtnRefresh" Content="Refresh" Width="60" Margin="5,0,5,0" Click="BtnRefresh_OnClick"/>
         </DockPanel>
        
         <DockPanel Grid.Row="1">

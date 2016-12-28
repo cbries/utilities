@@ -140,6 +140,19 @@ namespace CreatePlaylists
             }
         }
 
+        private void BtnRefresh_OnClick(object sender, RoutedEventArgs e)
+        {
+            string dirname = TxtDirectory.Text.Trim();
+            if (string.IsNullOrEmpty(dirname))
+            {
+                MessageBox.Show(this, "Please specify a directory.");
+            }
+            else
+            {
+                LoadFiles(dirname);
+            }
+        }
+
         private void ResetFiles()
         {
             TxtInfo.Clear();
