@@ -11,6 +11,7 @@ This repository includes an uncategorized list of applications/tools which suppo
 - 1filer: Small single application implemented in single files, i.e. any file is a standalone application.
 - Playground: everything without a special purpose, just testing around...
 - camlapsed: a small toolchain for generating time-lapsed videos
+- musiccleaner: Tooling for clean-up dirty mp3 files which are downloaded from Youtube.
 - resloader: a prototype for testing different resource loading approaches
 - weatherpi: A suite for tracking weather data (e.g. temperature, pressure) and visualization with rrdtool
 
