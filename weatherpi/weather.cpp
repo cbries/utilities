@@ -9,6 +9,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <thread>
+#include <future>
 
 // Linux 
 #include <unistd.h>
@@ -45,7 +47,7 @@ void dump()
 	std::cout << " Humidity = " << pDht22->Humidity() << " " << pDht22->HumidityUnit() << std::endl;
 	std::cout << " Temperature = " << pBmp180->Temperature() << " " << pBmp180->TemperatureUnit() << std::endl;
 	std::cout << " Pressure = " << pBmp180->Pressure() << " " << pBmp180->PressureUnit() << std::endl;
-	std::cout << " Altitude = " << pBmp180->Altitude() << std::endl;
+	std::cout << " Altitude = " << pBmp180->Altitude() << std::endl << std::flush;
 }
 
 int main(int argc, char **argv)
@@ -54,26 +56,26 @@ int main(int argc, char **argv)
 
 	while(true)
 	{
-		std::cout << "Query data: ";
+		std::cout << "Query data: " << std::flush;
 
 		bool r0 = pDht22->Refresh();
 		bool r1 = pBmp180->Refresh();
 
-		if(!r0) { std::cerr << "dht22->Refresh() failed" << std::endl; }  
-		if(!r1) { std::cerr << "bmp180->Refresh() failed" << std::endl; }
+		//if(!r0) { std::cerr << "dht22->Refresh() failed" << std::endl << std::flush; }  
+		//if(!r1) { std::cerr << "bmp180->Refresh() failed" << std::endl << std::flush; }
 
 		if(!r0 || !r1) 
 		{
-			std::cout << "MISS" << std::endl;
-			usleep(DELAY * 1000);
-			continue;
+			std::cout << "MISS" << std::endl << std::flush;
+			//usleep(DELAY * 1000);
+			//continue;
 		}
 		else
 		{
-			std::cout << "OK" << std::endl;
+			std::cout << "OK" << std::endl << std::flush;
 		}
 
-		std::cout << "RRD: ";
+		std::cout << "RRD: " << std::flush;
 
 		char rrdcmd[2048] = { '\0' };
 		snprintf(rrdcmd, 2048, "%s update rrdtool/weatherdata.rrd N:%3.3f:%3.3f:%3.3f:%4.3f"
@@ -83,8 +85,17 @@ int main(int argc, char **argv)
 			, pBmp180->Pressure()
 			, pBmp180->Altitude());
 
+		char gardenhmi[2048] = { '\0' };
+		snprintf(gardenhmi, 2048, "{\"temperature\" : %3.1f, \"humidity\" : %3.1f, \"pressure\" : %3.1f}", 
+			pBmp180->Temperature(), 
+			pDht22->Humidity(), 
+			pBmp180->Pressure());
+		FILE *fp = fopen("/home/pi/gitrepos/garden/webhmi/gartenServer.data.json", "w+");
+   		fprintf(fp, "%s", gardenhmi);
+   		fclose(fp);
+
 #ifdef DEBUG
-		std::cout << rrdcmd << std::endl;
+		std::cout << rrdcmd << std::endl << std::flush;
 #endif
 
 		bool ok;
@@ -95,7 +106,7 @@ int main(int argc, char **argv)
 			std::cerr << "rrdtool update failed: " << rrdcmd << std::endl;
 			std::cerr << "[OUTPUT]" << std::endl;
 			std::cerr << Helper::trim(output) << std::endl;
-			std::cerr << "[/OUTPUT]" << std::endl;
+			std::cerr << "[/OUTPUT]" << std::endl << std::flush;
 		}
 		else
 		{
@@ -107,11 +118,11 @@ int main(int argc, char **argv)
 				std::cerr << "rrdtool graph failed: " << m << std::endl;
 				std::cerr << "[OUTPUT]" << std::endl;
             	std::cerr << Helper::trim(output) << std::endl;
-            	std::cerr << "[/OUTPUT]" << std::endl;
+            	std::cerr << "[/OUTPUT]" << std::endl << std::flush;
 			}
 			else
 			{
-				std::cout << "OK" << std::endl;
+				std::cout << "OK" << std::endl << std::flush;
 			
 				dump();
 			}

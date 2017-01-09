@@ -26,6 +26,42 @@ rrdtool graph graph00-portrait.png \
     LINE3:humidity#ff00AA
 cp graph00-portrait.png ../html/data
 
+rrdtool graph graph-7days.png \
+    --height=200 --width=900 \
+    --color=BACK#FFFFFF \
+    --start end-1w --title "7 days - Temperature [°C], Humidity [%]" \
+    --x-grid HOUR:24:DAY:1:DAY:1:86400:"%D" \
+    --alt-autoscale --alt-y-grid --rigid \
+    DEF:temperature=weatherdata.rrd:temperature:AVERAGE \
+    DEF:humidity=weatherdata.rrd:humidity:AVERAGE \
+    LINE3:temperature#3366CC \
+    LINE3:humidity#ff00AA
+cp graph-7days.png ../html/data
+
+rrdtool graph graph-30days.png \
+	--height=200 --width=900 \
+	--color=BACK#FFFFFF \
+	--start end-1m --title "30 days - Temperature [°C], Humidity [%]" \
+	--x-grid HOUR:24:DAY:2:DAY:2:86400:"%D" \
+	--alt-autoscale --alt-y-grid --rigid \
+	DEF:temperature=weatherdata.rrd:temperature:AVERAGE \
+	DEF:humidity=weatherdata.rrd:humidity:AVERAGE \
+	LINE3:temperature#3366CC \
+	LINE3:humidity#ff00AA
+cp graph-30days.png ../html/data
+
+rrdtool graph graph-1year.png \
+    --height=200 --width=900 \
+    --color=BACK#FFFFFF \
+    --start end-1y --title "1 year - Temperature [°C], Humidity [%]" \
+    --x-grid MONTH:1:MONTH:1:MONTH:1:86400:"%D" \
+    --alt-autoscale --alt-y-grid --rigid \
+    DEF:temperature=weatherdata.rrd:temperature:AVERAGE \
+    DEF:humidity=weatherdata.rrd:humidity:AVERAGE \
+    LINE3:temperature#3366CC \
+    LINE3:humidity#ff00AA
+cp graph-1year.png ../html/data
+
 	#LINE2:altitude2#ff0000:"Altitude [m]" 
 	#LINE:pressure#ff00ff:"Pressure [hPa]"
     #DEF:altitude=weatherdata.rrd:pressure:AVERAGE \

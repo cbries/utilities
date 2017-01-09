@@ -1,6 +1,6 @@
 <?php
 
-$HOST = "192.168.137.200";
+$HOST = "192.168.178.233";
 $PORT = 80;
 $PATH = "/weatherpi/html/station.php";
 $TARGETURL = sprintf("http://%s:%d%s", $HOST, $PORT, $PATH);

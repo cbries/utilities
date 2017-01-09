@@ -58,9 +58,16 @@ bool Dht22::Refresh()
 
     data[0] = data[1] = data[2] = data[3] = data[4] = 0;
 
+	unsigned long countForTimeout = 0;
+
     // wait for pin to drop?
     while (bcm2835_gpio_lev(pin) == 1) {
 		usleep(1);
+		countForTimeout++;
+		if(countForTimeout >= 45000 ) {
+			std::cerr << "GPIO PIN " << pin << " does not become ready." << std::endl;
+			return false;
+		}
     }
 
     // read data!
