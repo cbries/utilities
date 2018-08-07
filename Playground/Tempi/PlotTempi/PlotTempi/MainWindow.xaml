@@ -1,0 +1,22 @@
+﻿<Window x:Class="PlotTempi.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525" Initialized="MainWindow_OnInitialized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        
+        <DockPanel Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Label Content="COM Port: " Height="24"/>
+            <ComboBox Name="CmbComPorts" Width="150" Height="24" DropDownClosed="CmbComPorts_OnDropDownClosed"/>
+            <Button Name="CmdClearLog" Height="24" Content="Clear Log" Margin="25,0,0,0" HorizontalAlignment="Center" Click="CmdClearLog_OnClick"/>
+            <Button Name="CmdSaveAsCsv" Height="24" Content="Save to CSV" Margin="10,0,0,0" HorizontalAlignment="Center" Click="CmdSaveAsCsv_OnClick"/>
+        </DockPanel>
+        
+        <TextBox Grid.Row="2" Name="TxtLogView" TextWrapping="WrapWithOverflow" Height="100">
+        </TextBox>
+    </Grid>
+</Window>
