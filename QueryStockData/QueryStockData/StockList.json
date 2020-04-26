@@ -1,0 +1,38 @@
+﻿[
+  {
+    "name": "Durch Shell B",
+    "isin": "GB00B03MM408"
+  },
+  {
+    "name": "Daimler",
+    "isin": "DE0007100000"
+  },
+  {
+    "name": "Deutsche Bank",
+    "isin": "DE0005140008"
+  },
+  {
+    "name": "E.ON",
+    "isin": "DE000ENAG999"
+  },
+  {
+    "name": "AT&T",
+    "isin": "US00206R1023"
+  },
+  {
+    "name": "Boeing",
+    "isin": "US0970231058"
+  },
+  {
+    "name": "Coca-Cola",
+    "isin": "US1912161007"
+  },
+  {
+    "name": "Gazprom ADR",
+    "isin": "US3682872078"
+  },
+  {
+    "name": "Steinhoff",
+    "isin": "NL0011375019"
+  }
+]
