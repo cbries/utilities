@@ -21,6 +21,7 @@
  */
 using System;
 using System.IO;
+using System.Text;
 
 namespace QueryStockData
 {
@@ -62,6 +63,26 @@ namespace QueryStockData
 
             foreach (var it in stockList)
                 it?.Show();
+
+            var sb = new StringBuilder();
+            sb.AppendLine("Name;ISIN;Last");
+            foreach(var it in stockList)
+            {
+                if (it == null) continue;
+                var line = $"{it.Name};{it.ISIN};{it.Last}";
+                sb.AppendLine(line);
+            }
+
+            try
+            {
+                var fname = Path.GetFileNameWithoutExtension(_stockListFile) + ".csv";
+                if (File.Exists(fname)) File.Delete(fname);
+                File.WriteAllText(fname, sb.ToString(), Encoding.UTF8);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("CSV create failed: {0}", ex.Message);
+            }
 
             Console.WriteLine("Enter any key...");
             Console.ReadKey();
