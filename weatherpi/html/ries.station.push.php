@@ -14,6 +14,7 @@ $files = array(
 , "../rrdtool/graph-1year.png"
 , "../rrdtool/graph-30days.png"
 , "../rrdtool/graph-7days.png"
+, "../rrdtool/graph-12hours.png"
 );
 
 for($i=0; $i < count($files); ++$i)
