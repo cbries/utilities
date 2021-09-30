@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>pvData testview</title>
+    <script type="text/javascript" src="libs/jquery-2.1.0.min.js"></script>		
+    <script>
+		var remotePvUrl = "https://www.christianbenjaminries.de/raspberry/pv/jqueryPvData/pvData.html";
+	
+        $(document).ready(function () {
+			setInterval(function(){ 
+
+				var src = remotePvUrl + "?_t=" +  Math.random();
+				console.log("Load iframe... " + src);				
+				$('#iframePvGaragendach').attr('src', src);			
+			
+			}, 3000);
+        });
+    </script>
+	<style type="text/css">
+	<!-- BODY {background:none transparent;}-->
+	</style>
+</head>
+<body>
+
+<div id="iframePvGaragendachHost" style="background-color: #00000066; position: absolute; border-radius: 25px; left: 10px; top: 10px; width: 233px; height: 212px; overflow: hidden;">
+<img src="http://192.168.178.33/weatherpi/html/data/graph-12hours.png" style="position: absolute; left: -10px; max-width: 107%; max-height: auto; background-color: #ffffff;">
+<!--
+<iframe 
+	id="iframePvGaragendach"
+	src="https://www.christianbenjaminries.de/raspberry/pv/jqueryPvData/pvData.html" 
+    title="Garagendach"
+    style="position: absolute; width: 233px; height: 212px; background-color: #00000066;" allowtransparency="true">
+</iframe>
+-->
+</div>
+
+</body>
+</html>
